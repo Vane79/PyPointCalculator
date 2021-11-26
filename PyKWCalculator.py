@@ -1,6 +1,6 @@
 import PySimpleGUI as sg
 from selenium_fetch_stats import selenium
-from selenium.common.exceptions import ElementNotInteractableException
+from selenium.common.exceptions import ElementNotInteractableException, NoSuchElementException
 import calcs
 
 sg.theme('DarkGrey7')  # please make your windows colorful
@@ -38,7 +38,8 @@ while True:  # Event Loop
             window['-IN-V-'].update(videos)
         except ElementNotInteractableException:
             window['-OUT3-'].update('                                                               Please press that button again')
-
+        except NoSuchElementException:
+            window['-OUT3-'].update('                                                               Check login credentials and try again')
 
 
     if event == 'Calculate':
