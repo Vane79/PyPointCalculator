@@ -2,7 +2,7 @@
 
 Small gui-based app that helps my wife count her points at her job.
 Calculator part works on its own, but for autofetching you need an account from keywording.pro.
-Run with `python3 PyKWCalculator.py
+Run with `python3 PyKWCalculator.py`
 
 
 ##### Requirements:
