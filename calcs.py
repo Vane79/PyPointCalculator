@@ -18,8 +18,11 @@ def days_worked():
     """
     :return:   amount of weekdays up to today, including today.
     """
-    end_of_month = date(date.today().year, (date.today().month + 1), 1)
-    end_of_month += timedelta(days=-1)
+    if date.today().month != 12:
+        end_of_month = date(date.today().year, (date.today().month + 1), 1)
+        end_of_month += timedelta(days=-1)
+    else:
+        end_of_month = date(date.today().year, date.today().month, 31)
     day_counter = date(date.today().year, date.today().month, 1)
     worked_days, month_workdays = 0, 0
     while day_counter <= end_of_month:  # let's count weekdays in the current month
@@ -30,6 +33,8 @@ def days_worked():
             day_counter += timedelta(days=1)
         if day_counter == date.today():
             worked_days = month_workdays + 1
+        if worked_days == 0:
+            worked_days = 1
     return worked_days, month_workdays
 
 
