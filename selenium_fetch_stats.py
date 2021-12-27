@@ -9,7 +9,7 @@ url = 'https://admin.keywording.pro/'
 
 def selenium():
     ffox_options = Options()
-    # ffox_options.headless = True
+    ffox_options.headless = True
     sel = webdriver.Firefox(options=ffox_options)
     sel.implicitly_wait(5)
     sel.get(url)
