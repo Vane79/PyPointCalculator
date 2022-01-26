@@ -10,6 +10,8 @@ class Pointer:
         self.average_daily = self.p_total // self.worked_days
         self.point_prediction = self.average_daily * self.month_workdays
         self.money_prediction, self.tier_prediction, self.diff_prediction = calculate_money(self.point_prediction)
+        if self.money_prediction < self.money_now:
+            self.money_prediction = self.money_now
         self.tier_diff_by_end_of_month = self.diff_prediction // self.month_workdays
         self.workdays_left = self.month_workdays - self.worked_days
 
