@@ -26,7 +26,7 @@ def days_worked():
     else:
         end_of_month = date(date.today().year, date.today().month, 31)
     day_counter = date(date.today().year, date.today().month, 1)
-    worked_days, month_workdays = 0, 0
+    worked_days, month_workdays = 1, 0
     while day_counter <= end_of_month:  # let's count weekdays in the current month
         if day_counter.weekday() not in (5, 6):
             month_workdays += 1
@@ -34,9 +34,7 @@ def days_worked():
         else:
             day_counter += timedelta(days=1)
         if day_counter == date.today():
-            worked_days = month_workdays + 1
-        if worked_days == 0:
-            worked_days = 1
+            worked_days = month_workdays
     return worked_days, month_workdays
 
 
@@ -79,4 +77,5 @@ if __name__ == '__main__':
     # photos, videos = selenium()
     total = int(photos) + (int(videos) * 2)
     output_data(total)
+    print(days_worked())
     pass
