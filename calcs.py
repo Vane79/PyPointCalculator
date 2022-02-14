@@ -33,7 +33,7 @@ def days_worked():
             day_counter += timedelta(days=1)
         else:
             day_counter += timedelta(days=1)
-        if day_counter == date.today():
+        if day_counter == (date.today() + timedelta(days=1)):
             worked_days = month_workdays
     return worked_days, month_workdays
 

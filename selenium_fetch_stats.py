@@ -1,4 +1,4 @@
-from creds import login, pwd
+from creds import login, paswd
 from time import sleep
 from selenium import webdriver
 from selenium.webdriver.common.by import By
@@ -14,7 +14,7 @@ def selenium():
     sel.implicitly_wait(5)
     sel.get(url)
     sel.find_element(By.CSS_SELECTOR, '#loginform-email').send_keys(login)
-    sel.find_element(By.CSS_SELECTOR, '#loginform-password').send_keys(pwd)
+    sel.find_element(By.CSS_SELECTOR, '#loginform-password').send_keys(paswd)
     sel.find_element(By.CSS_SELECTOR, '.col-xs-4').click()
     sleep(1)
     sel.find_element(By.CSS_SELECTOR, 'li.treeview:nth-child(3)').click()
