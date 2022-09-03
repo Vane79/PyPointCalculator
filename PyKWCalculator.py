@@ -1,30 +1,24 @@
 import PySimpleGUI as sg
 from selenium_fetch_stats import selenium
 from selenium.common.exceptions import ElementNotInteractableException, NoSuchElementException
+from kittehs import kitteh
+from offdays import days_off
 import calcs
 
 sg.theme('DarkGrey7')  # please make your windows colorful
 
-column1 = [
-    [sg.Text('Number of your photos:')],
-    [sg.Input(key='-IN-P-', size=(45, 1))]
-]
-column2 = [
-    [sg.Text('And videos:')],
-    [sg.Input(key='-IN-V-', size=(45, 1))],
-
-]
 layout = [
-    [sg.Column(column1, element_justification='left'), sg.Column(column2, element_justification='right')],
-    [sg.Text(size=(90, 1), text=f"", key='-OUT1-')],
-    [sg.Text(size=(90, 1), text=f"", key='-OUT2-')],
-    [sg.Text(size=(90, 1), text=f"                                                                      Waiting for input", key='-OUT3-')],
-    [sg.Text(size=(90, 1), text="", key='-OUT4-')],
-    [sg.Text(size=(90, 1), text=f"", key='-OUT5-')],
-    [sg.Button('Calculate'), sg.Button('Fetch automatically')]
+    [sg.Push(), sg.Text("*Motivational quote*"), sg.Push()],
+    [sg.Text('Number of photos:'), sg.Input(key='-IN-P-', size=25), sg.Text('And videos:'), sg.Input(key='-IN-V-', size=25)],
+    [sg.Text(text=f"", key='-OUT1-', expand_x=True)],
+    [sg.Text(text=f"", key='-OUT2-', expand_x=True)],
+    [sg.Push(), sg.Text(text=f"Waiting for input", key='-OUT3-'), sg.Push()],
+    [sg.Text(text=f"", key='-OUT4-', expand_x=True)],
+    [sg.Text(text=f"", key='-OUT5-', expand_x=True)],
+    [sg.Text(text=f"", key='-OUT6-', expand_x=True)],
+    [sg.Push(), sg.Button('Calculate'), sg.Push(), sg.Button('Fetch automatically'), sg.Push(), sg.Button('Kitties!'), sg.Push()],
 ]
-
-window = sg.Window('Py Point Calculator', layout)
+window = sg.Window('Py Point Calculator', layout, element_justification='m')
 
 while True:  # Event Loop
     event, values = window.read()
@@ -36,11 +30,14 @@ while True:  # Event Loop
             photos, videos = selenium()
             window['-IN-P-'].update(photos)
             window['-IN-V-'].update(videos)
+            window['-OUT3-'].update('Fetch successful')
         except ElementNotInteractableException:
-            window['-OUT3-'].update('                                                               Please press that button again')
+            window['-OUT3-'].update('Please press that button again')
         except NoSuchElementException:
-            window['-OUT3-'].update('                                                               Check login credentials and try again')
+            window['-OUT3-'].update('Check login credentials and try again')
 
+    if event == 'Kitties!':
+        kitteh()
 
     if event == 'Calculate':
         photos, videos = values['-IN-P-'], values['-IN-V-']
@@ -50,7 +47,7 @@ while True:  # Event Loop
             videos = 0
         try:
             total = int(photos) + (int(videos) * 2)
-            calculated = calcs.Pointer(total)
+            calculated = calcs.Pointer(total, days_off)
             window['-OUT1-'].update(
                 f"You've processed {calculated.p_total} total points. That was approx. {calculated.average_daily} points per weekday.")
             window['-OUT2-'].update(
@@ -58,9 +55,10 @@ while True:  # Event Loop
             window['-OUT3-'].update(
                 f"So, by my humble estimates, you'll get {calculated.money_prediction} roubles by the end of the current month, {calculated.tier_prediction} roubles per point.")
             window['-OUT4-'].update(
-                f"You'd have to process {calculated.tier_diff_by_end_of_month} more points per weekday for the next tier.")
+                f"And, converted to points, that'd be {calculated.prognosis} points.")
             window['-OUT5-'].update(
-                f"By the way, there's only a bit of time left. Only {calculated.workdays_left} days, to be exact.")
+                f"You'd have to process {calculated.tier_diff_by_end_of_month} more points per weekday for the next tier.")
+            window['-OUT6-'].update(
+                f"You have worked {calculated.worked_days} days out of {calculated.month_workdays} this month.")
         except ValueError:
-            window['-OUT3-'].update(
-                f"                                                                          Try again")
+            window['-OUT3-'].update(f"Try again")
